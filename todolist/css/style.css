@@ -209,17 +209,16 @@ section.add-active .add-btn {
   display: flex;
 }
 
-.card-add-form .button {
+.card-add-form input {
   width: 100%;
   margin: 0.5rem 0;
   padding: 0.5rem;
   border-radius: 3px;
   font-weight: bold;
   outline: none;
-  cursor: pointer;
 }
 
-.card-add-form #add-submit-btn {
+.card-add-form .add-submit-btn {
   background-color: rgb(135, 194, 147);
   border: 1px solid rgb(123, 148, 123);
   color: rgba(255, 255, 255, 0.7);
@@ -227,16 +226,18 @@ section.add-active .add-btn {
 }
 
 /*add버튼 활성화*/
-.card-add-form #add-submit-btn.active {
+.card-add-form .add-submit-btn.active {
   background-color: rgb(18, 171, 48);
   border: 1px solid rgb(12, 120, 12);
   color: whitesmoke;
+  cursor: pointer;
 }
 
-.card-add-form #cancel-btn {
+.card-add-form .cancel-btn {
   color: rgb(42, 42, 42);
   background-color: rgb(241, 241, 241);
   border: 1px solid rgb(175, 175, 175);
+  cursor: pointer;
 }
 
 /*aslide menu*/
