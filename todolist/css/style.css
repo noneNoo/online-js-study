@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@100;400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+li {
+  list-style-type: none;
+}
+
+body {
+  background-color: whitesmoke;
+  margin: 0;
+  color: rgb(42, 42, 42);
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 100vw;
+  overflow: hidden;
+}
+
+header {
+  font-size: 10px;
+  background-color: rgb(42, 42, 42);
+  color: whitesmoke;
+  letter-spacing: 4px;
+  height: 5vh;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+header > button {
+  display: flex;
+  margin-left: auto;
+  background-color: transparent;
+  color: whitesmoke;
+  font-size: 24px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+header > button:hover {
+  background-color: rgba(245, 245, 245, 0.156);
+}
+
+main {
+  display: flex;
+  padding: 1rem;
+  height: 95vh;
+}
+
+/*column*/
+section {
+  width: 100%;
+  background-color: #e5e5e5;
+  border-radius: 5px;
+  border: 1px solid #d1d1d1;
+  padding: 0.8rem 0.5rem;
+}
+
+section:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.list-hd {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+}
+
+.list-hd-name {
+  color: rgb(42, 42, 42);
+  font-size: 14px;
+}
+
+.list-count {
+  border-radius: 50%;
+  background-color: rgb(184, 184, 184);
+  margin-right: 0.5rem;
+  padding: 2px;
+  font-size: 10px;
+  display: flex;
+  width: 1rem;
+  height: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-hd > .btns {
+  display: flex;
+  margin-left: auto;
+}
+
+.list-hd button {
+  display: flex;
+  background-color: transparent;
+  margin-left: 0.5rem;
+  color: gray;
+  font-size: 20px;
+  padding: 0;
+
+  transition: 0.2s;
+}
+
+.list-hd button:hover {
+  color: rgb(42, 42, 42);
+}
+
+/*lists*/
+.list-card {
+  padding: 0.5rem;
+  background-color: whitesmoke;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #dbdbdb;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  cursor: pointer;
+}
+
+.list-card .icon {
+  margin-right: 0.5rem;
+}
+
+.list-card-title {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 1rem;
+  color: rgb(42, 42, 42);
+}
+
+.list-card-sub-info {
+  font-weight: lighter;
+  color: gray;
+  font-size: 12px;
+}
+
+.list-card-sub-info > .nickname {
+  font-weight: 600;
+}
+
+/* form */
+.card-add-form {
+  display: none;
+  flex-direction: column;
+}
+
+/*column이 add모드로 active 되었을때*/
+section.add-active .card-add-form {
+  display: flex;
+}
+
+section.add-active .add-btn {
+  transform: rotate(135deg);
+}
+
+.card-add-form textarea {
+  border: none;
+  outline: none;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  padding: 0.5rem;
+  resize: vertical;
+  background-color: whitesmoke;
+}
+
+.card-add-form textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.card-add-form textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(196, 196, 196);
+  border-radius: 10px;
+}
+
+.card-add-form textarea::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+.card-add-form textarea::-webkit-scrollbar-button {
+  display: none;
+}
+
+.card-add-form textarea:focus {
+  box-shadow: 0 0 0 3px rgba(90, 145, 255, 0.455);
+  border: 2px solid rgba(90, 145, 255);
+}
+
+.card-add-form > div {
+  display: flex;
+}
+
+.card-add-form .button {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+}
+
+.card-add-form #add-submit-btn {
+  background-color: rgb(135, 194, 147);
+  border: 1px solid rgb(123, 148, 123);
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 0.5rem;
+}
+
+/*add버튼 활성화*/
+.card-add-form #add-submit-btn.active {
+  background-color: rgb(18, 171, 48);
+  border: 1px solid rgb(12, 120, 12);
+  color: whitesmoke;
+}
+
+.card-add-form #cancel-btn {
+  color: rgb(42, 42, 42);
+  background-color: rgb(241, 241, 241);
+  border: 1px solid rgb(175, 175, 175);
+}
+
+/*aslide menu*/
+aside {
+  background-color: white;
+  width: 300px;
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  right: -300px;
+  transition: 0.5s;
+}
+
+aside.active {
+  right: 0;
+  box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.05);
+}
+
+aside > .hd-section {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+aside > .hd-section > span {
+  display: flex;
+}
+
+aside > .hd-section > .icon {
+  margin-right: 0.5rem;
+  font-size: 16px;
+}
+
+aside > .hd-section > .title {
+  font-size: 14px;
+}
+
+#menu-close-btn {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  font-size: 20px;
+  color: rgb(42, 42, 42);
+  margin-left: auto;
+}
