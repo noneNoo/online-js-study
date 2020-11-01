@@ -1,10 +1,19 @@
 // 카드 플러스 버튼 가져오기
 const plusBtn = document.getElementsByClassName('add-btn');
-// const textareas = document.getElementsByClassName('note-textarea');
-// const addSubmitBtn = document.getElementsByClassName('add-submit-btn');
 const cardAddForms = document.getElementsByClassName('card-add-form');
 
-// 플러스 버튼을 눌렀을 때 이벤트 발생
+// 인자로 선택된 calumn을 받아서 ul값을 조절하는 함수
+function ulHeightControl(currentColumn) {
+  let currentUl = currentColumn.childNodes[7];
+
+  if (currentUl.style.height == `77.5%`) {
+    currentUl.style.height = `95%`;
+  } else {
+    currentUl.style.height = `77.5%`;
+  }
+}
+
+// 플러스 버튼을 눌렀을 때 form 토글
 function plusBtnClickHandler(e) {
   let targetColumn = e.target;
 
@@ -13,8 +22,9 @@ function plusBtnClickHandler(e) {
     targetColumn = targetColumn.parentNode;
   }
 
-  // column(section)에 class를 add해준다
   targetColumn.classList.toggle('add-active');
+
+  ulHeightControl(targetColumn);
 }
 
 // textarea에 값이 input될 때마다 실행될 함수
@@ -86,6 +96,8 @@ function addCard(currentTarget) {
   newCard.appendChild(newCardDiv);
 
   currentColumnUl.appendChild(newCard);
+
+  currentTextarea.value = '';
 }
 
 function formBtnClickHandler(e) {
@@ -99,9 +111,11 @@ function formBtnClickHandler(e) {
 
     // cancel 버튼 눌렀을 시 form 숨기기
   } else if (e.target.classList.contains('cancel-btn')) {
-    let currentUl = e.target.parentNode.parentNode.parentNode;
+    let currentColumn = e.target.parentNode.parentNode.parentNode;
 
-    currentUl.classList.remove('add-active');
+    currentColumn.classList.remove('add-active');
+
+    ulHeightControl(currentColumn);
 
     // textarea를 클릭했을 시 입력받은 값에 따라
     // add submit 버튼 색상을 변경하는 이벤트 실행
@@ -113,14 +127,6 @@ function formBtnClickHandler(e) {
 for (let i = 0; i < plusBtn.length; i++) {
   plusBtn[i].addEventListener('click', plusBtnClickHandler);
 }
-
-// for (let i = 0; i < textareas.length; i++) {
-//   textareas[i].addEventListener('input', textareaKeydownHandler);
-// }
-
-// for (let i = 0; i < addSubmitBtn.length; i++) {
-//   addSubmitBtn[i].addEventListener('click', addBtnClickHandler);
-// }
 
 for (let i = 0; i < cardAddForms.length; i++) {
   cardAddForms[i].addEventListener('click', formBtnClickHandler);

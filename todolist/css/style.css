@@ -125,6 +125,19 @@ section:not(:last-child) {
   color: rgb(42, 42, 42);
 }
 
+.column {
+  height: 100%;
+  /* overflow-y: scroll; */
+}
+
+.column > ul {
+  height: 95%;
+  overflow-y: scroll;
+}
+
+.column > ul::-webkit-scrollbar {
+}
+
 /*lists*/
 .list-card {
   padding: 0.5rem;

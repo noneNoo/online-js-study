@@ -16,4 +16,5 @@ function menuCloseBtnClickHandler() {
 }
 
 menuOpenBtn.addEventListener('click', menuOpenBtnClickHandler);
+
 menuCloseBtn.addEventListener('click', menuCloseBtnClickHandler);
