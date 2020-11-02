@@ -11,7 +11,8 @@ h4,
 h5,
 h6,
 ul,
-li {
+li,
+p {
   padding: 0;
   margin: 0;
 }
@@ -36,7 +37,7 @@ body {
 }
 
 header {
-  font-size: 10px;
+  font-size: 8px;
   background-color: rgb(42, 42, 42);
   color: whitesmoke;
   letter-spacing: 4px;
@@ -73,6 +74,7 @@ section {
   border-radius: 5px;
   border: 1px solid #d1d1d1;
   padding: 0.8rem 0.5rem;
+  padding-right: 0;
 }
 
 section:not(:last-child) {
@@ -85,6 +87,8 @@ section:not(:last-child) {
   align-items: center;
   margin-bottom: 0.8rem;
   font-weight: bold;
+
+  padding-right: 0.5rem;
 }
 
 .list-hd-name {
@@ -127,7 +131,6 @@ section:not(:last-child) {
 
 .column {
   height: 100%;
-  /* overflow-y: scroll; */
 }
 
 .column > ul {
@@ -136,6 +139,21 @@ section:not(:last-child) {
 }
 
 .column > ul::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.column > ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 10rem;
+  border: 2px solid #e5e5e5;
+}
+
+.column > ul::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+}
+
+.column > ul::-webkit-scrollbar-track-piece:end {
+  background: transparent;
 }
 
 /*lists*/
@@ -150,7 +168,11 @@ section:not(:last-child) {
   cursor: pointer;
 }
 
-.list-card .icon {
+.list-card:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.list-card .icon:first-child {
   margin-right: 0.5rem;
 }
 
@@ -171,10 +193,31 @@ section:not(:last-child) {
   font-weight: 600;
 }
 
+.card-delete-btn {
+  width: 20px;
+  height: 20px;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-right: 0;
+  background-color: transparent;
+  color: rgb(42, 42, 42);
+  margin-left: auto;
+  border-radius: 3px;
+}
+
+.card-delete-btn:hover {
+  background-color: rgb(248, 94, 94);
+  color: white;
+}
+
 /* form */
 .card-add-form {
   display: none;
   flex-direction: column;
+  padding-right: 0.5rem;
 }
 
 /*column이 add모드로 active 되었을때*/
@@ -297,4 +340,84 @@ aside > .hd-section > .title {
   font-size: 20px;
   color: rgb(42, 42, 42);
   margin-left: auto;
+}
+
+/*팝업*/
+
+#filter {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  display: none;
+}
+
+#filter.active {
+  opacity: 1;
+  display: none;
+}
+
+#filter > #popup {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 1rem;
+  align-items: center;
+  border-radius: 3px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  position: absolute;
+
+  opacity: 0;
+  transform: translateY(-400%);
+}
+
+#filter.active > #popup {
+  opacity: 1;
+  transform: translateY(-100%);
+  transition: 0.5s;
+}
+
+#popup > .message {
+  font-size: 14px;
+}
+
+#popup > div {
+  display: flex;
+  width: 50%;
+}
+
+.popup-btn {
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+  outline: none;
+}
+
+#yes-btn {
+  margin-right: 0.5rem;
+  background-color: rgb(247, 75, 75);
+  border: 1px solid rgb(206, 29, 29);
+  color: whitesmoke;
+}
+
+#no-btn {
+  background-color: whitesmoke;
+  border: 1px solid rgb(204, 204, 204);
+  color: rgb(42, 42, 42);
+}
+
+#yes-btn:hover {
+  background-color: rgb(228, 65, 65);
+}
+
+#no-btn:hover {
+  background-color: rgb(231, 231, 231);
 }

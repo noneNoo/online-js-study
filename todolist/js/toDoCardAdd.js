@@ -3,6 +3,7 @@ const plusBtn = document.getElementsByClassName('add-btn');
 const cardAddForms = document.getElementsByClassName('card-add-form');
 
 // 인자로 선택된 calumn을 받아서 ul값을 조절하는 함수
+// % 보다 더 좋은 방안을 모색중...
 function ulHeightControl(currentColumn) {
   let currentUl = currentColumn.childNodes[7];
 
@@ -108,6 +109,7 @@ function formBtnClickHandler(e) {
   ) {
     //this는 input이 전송한 form을 가르킨다
     addCard(this[1]);
+    e.target.classList.remove('active');
 
     // cancel 버튼 눌렀을 시 form 숨기기
   } else if (e.target.classList.contains('cancel-btn')) {
