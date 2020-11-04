@@ -7,10 +7,10 @@ const cardAddForms = document.getElementsByClassName('card-add-form');
 function ulHeightControl(currentColumn) {
   let currentUl = currentColumn.childNodes[7];
 
-  if (currentUl.style.height == `77.5%`) {
+  if (currentUl.style.height == `75.5%`) {
     currentUl.style.height = `95%`;
   } else {
-    currentUl.style.height = `77.5%`;
+    currentUl.style.height = `75.5%`;
   }
 }
 
@@ -23,13 +23,13 @@ function plusBtnClickHandler(e) {
     targetColumn = targetColumn.parentNode;
   }
 
+  //해당 타겟 column에 active mode 적용
   targetColumn.classList.toggle('add-active');
-
   ulHeightControl(targetColumn);
 }
 
 // textarea에 값이 input될 때마다 실행될 함수
-function textareaKeydownHandler(e) {
+function textareaKeyInputHandler(e) {
   // 타겟한 column 내의 add submit 버튼을 찾아내 정의
   let targetAddSubmitBtn = e.target.parentNode[1];
 
@@ -42,12 +42,31 @@ function textareaKeydownHandler(e) {
   }
 }
 
-function addCard(currentTarget) {
-  let currentTextarea = currentTarget.parentNode.parentNode[0];
+// textarea에 keypress될 때마다 실행될 함수
+function textareaKeypressHandler(e) {
+  let addBtn = e.target.parentNode[1];
+
+  // 쉬프트키와 엔터키 동시 입력시, 엔터키 입력
+  if (e.key == 'Enter' && e.shiftKey) {
+    return;
+
+    // textarea의 value가 비어 있는데 엔터키 입력시, 엔터키 무시
+  } else if (!e.target.value && e.key == 'Enter') {
+    e.preventDefault();
+
+    // 버튼이 active 되었을 때 엔터키 입력시, cardAdd 함수 실행
+  } else if (e.key == 'Enter' && addBtn.classList.contains('active')) {
+    e.preventDefault();
+    addCard(addBtn);
+  }
+}
+
+// list card를 추가하는 함수
+function addCard(addButton) {
+  let currentTextarea = addButton.parentNode.parentNode[0];
 
   // 카드를 추가할 선택된 ul
-  let currentColumnUl =
-    currentTarget.parentNode.parentNode.parentNode.children[2];
+  let currentColumnUl = addButton.parentNode.parentNode.parentNode.children[2];
 
   // 카드 틀 li 생성
   let newCard = document.createElement('li');
@@ -57,6 +76,7 @@ function addCard(currentTarget) {
   let newCardIcon = document.createElement('div');
   let newCardTitle = document.createElement('h2');
   let newCardinfo = document.createElement('h4');
+  let newCardDeleteBtn = document.createElement('button');
 
   // textarea에 입력된 값을 새 카드에 넣기
   newCardTitle.innerText = currentTextarea.value;
@@ -83,11 +103,28 @@ function addCard(currentTarget) {
     </svg>
   `;
 
+  newCardDeleteBtn.innerHTML = `
+    <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 16 16"
+    class="bi bi-x"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+    />
+  </svg>
+  `;
+
   //css 스타일링을 위한 classname 부여
   newCard.className = 'list-card';
   newCardIcon.className = 'icon';
   newCardTitle.className = 'list-card-title';
   newCardinfo.className = 'list-card-sub-info';
+  newCardDeleteBtn.className = 'icon card-delete-btn';
 
   // 차곡차곡 작은 태그부터 넣어주기
   newCardDiv.appendChild(newCardTitle);
@@ -95,13 +132,18 @@ function addCard(currentTarget) {
 
   newCard.appendChild(newCardIcon);
   newCard.appendChild(newCardDiv);
+  newCard.appendChild(newCardDeleteBtn);
 
   currentColumnUl.appendChild(newCard);
 
+  // textarea value값 초기화
+  // addbtn active class 해제
   currentTextarea.value = '';
+  addButton.classList.remove('active');
 }
 
 function formBtnClickHandler(e) {
+  console.log(this[1]);
   //active된 add버튼을 눌렀을 시 카드 추가
   if (
     e.target.classList.contains('add-submit-btn') &&
@@ -122,7 +164,8 @@ function formBtnClickHandler(e) {
     // textarea를 클릭했을 시 입력받은 값에 따라
     // add submit 버튼 색상을 변경하는 이벤트 실행
   } else if (e.target.classList.contains('note-textarea')) {
-    e.target.addEventListener('input', textareaKeydownHandler);
+    e.target.addEventListener('input', textareaKeyInputHandler);
+    e.target.addEventListener('keydown', textareaKeypressHandler);
   }
 }
 
