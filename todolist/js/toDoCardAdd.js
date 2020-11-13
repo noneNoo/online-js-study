@@ -38,17 +38,17 @@ function saveLists(arrayNameString, array) {
   localStorage.setItem(arrayNameString, JSON.stringify(array));
 }
 
-// 인자로 선택된 calumn을 받아서 ul값을 조절하는 함수
-// % 보다 더 좋은 방안을 모색중...
-function ulHeightControl(currentColumn) {
-  let currentUl = currentColumn.childNodes[7];
+// // 인자로 선택된 calumn을 받아서 ul값을 조절하는 함수
+// // % 보다 더 좋은 방안을 모색중...
+// function ulHeightControl(currentColumn) {
+//   let currentUl = currentColumn.childNodes[7];
 
-  if (currentUl.style.height == `75.5%`) {
-    currentUl.style.height = `95%`;
-  } else {
-    currentUl.style.height = `75.5%`;
-  }
-}
+//   if (currentUl.style.height == `75.5%`) {
+//     currentUl.style.height = `95%`;
+//   } else {
+//     currentUl.style.height = `75.5%`;
+//   }
+// }
 
 // 플러스 버튼을 눌렀을 때 form 토글
 function plusBtnClickHandler(e) {
@@ -77,24 +77,24 @@ function textareaKeyInputHandler(e) {
   }
 }
 
-// textarea에 keypress될 때마다 실행될 함수
-function textareaKeypressHandler(e) {
-  let addBtn = e.target.parentNode[1];
-  // 쉬프트키와 엔터키 동시 입력시, 엔터키 입력
-  if (e.key == 'Enter' && e.shiftKey) {
-    return;
-    // textarea의 value가 비어 있는데 엔터키 입력시, 엔터키 무시
-  } else if (!e.target.value && e.key == 'Enter') {
-    e.preventDefault();
-    // 버튼이 active 되었을 때 엔터키 입력시, cardAdd 함수 실행
-  } else if (e.key == 'Enter' && addBtn.classList.contains('active')) {
-    e.preventDefault();
-    addCard(addBtn);
-  }
-}
+// // textarea에 keypress될 때마다 실행될 함수
+// function textareaKeypressHandler(e) {
+//   let addBtn = e.target.parentNode[1];
+//   // 쉬프트키와 엔터키 동시 입력시, 엔터키 입력
+//   if (e.key == 'Enter' && e.shiftKey) {
+//     return;
+//     // textarea의 value가 비어 있는데 엔터키 입력시, 엔터키 무시
+//   } else if (!e.target.value && e.key == 'Enter') {
+//     e.preventDefault();
+//     // 버튼이 active 되었을 때 엔터키 입력시, cardAdd 함수 실행
+//   } else if (e.key == 'Enter' && addBtn.classList.contains('active')) {
+//     e.preventDefault();
+//     addCard(addBtn);
+//   }
+// }
 
 function addArrayList(arrayName, text) {
-  const newId = arrayName.length + 1;
+  newId = arrayName.length + 1;
   // array에 들어갈 틀
   const listObj = {
     text: text,
@@ -104,7 +104,7 @@ function addArrayList(arrayName, text) {
   arrayName.push(listObj);
 }
 
-function paintCard(text, currentColumnUl) {
+function paintCard(text, currentColumnUl, newId) {
   // 카드 틀 li 생성
   let newCard = document.createElement('li');
 
@@ -158,6 +158,7 @@ function paintCard(text, currentColumnUl) {
 
   //css 스타일링을 위한 classname 부여
   newCard.className = 'list-card';
+  newCard.id = newId;
   newCardIcon.className = 'icon';
   newCardTitle.className = 'list-card-title';
   newCardinfo.className = 'list-card-sub-info';
@@ -177,64 +178,92 @@ function paintCard(text, currentColumnUl) {
   currentColumnUl.appendChild(newCard);
 }
 
-function addCard(addButton) {
-  let currentTextarea = addButton.parentNode.parentNode[0];
-  //선택된 column
-  let currentColumn = addButton.parentNode.parentNode.parentNode;
-  // 카드를 추가할 선택된 ul
-  let currentColumnUl = currentColumn.children[2];
+// delete버튼을 불러오는 함수
+function delectButtonsLoad() {
+  const deleteBtns = document.getElementsByClassName('card-delete-btn');
 
-  // column의 id에 따라 배열을 나눠 저장
+  for (let i = 0; i < deleteBtns.length; i++) {
+    deleteBtns[i].addEventListener('click', deleteBtnClickHandler);
+  }
+}
+
+function deleteBtnClickHandler(e) {
+  let currentCard = e.target;
+  while (!currentCard.classList.contains('list-card')) {
+    currentCard = currentCard.parentNode;
+  }
+  const currentColumn = currentCard.parentNode;
+
+  currentColumn.removeChild(currentCard);
+
   if (currentColumn.id == 'before-items') {
-    addArrayList(beforeLists, currentTextarea.value);
-    saveLists('beforeLists', beforeLists);
-  } else if (currentColumn.id == 'doing-items') {
-    addArrayList(doingLists, currentTextarea.value);
-    saveLists('doingLists', doingLists);
-  } else if (currentColumn.id == 'after-items') {
-    addArrayList(afterLists, currentTextarea.value);
-    saveLists('afterLists', afterLists);
-  }
-
-  paintCard(currentTextarea.value, currentColumnUl);
-
-  // textarea value값 초기화
-  // addbtn active class 해제
-  currentTextarea.value = '';
-  addButton.classList.remove('active');
-}
-
-function formBtnClickHandler(e) {
-  //active된 add버튼을 눌렀을 시 카드 추가
-  if (
-    e.target.classList.contains('add-submit-btn') &&
-    e.target.classList.contains('active')
-  ) {
-    //this는 input이 전송한 form을 가르킨다
-    addCard(this[1]);
-    e.target.classList.remove('active');
-
-    // cancel 버튼 눌렀을 시 form 숨기기
-  } else if (e.target.classList.contains('cancel-btn')) {
-    let currentColumn = e.target.parentNode.parentNode.parentNode;
-
-    currentColumn.classList.remove('add-active');
-
-    ulHeightControl(currentColumn);
-
-    // textarea를 클릭했을 시 입력받은 값에 따라
-    // add submit 버튼 색상을 변경하는 이벤트 실행
-  } else if (e.target.classList.contains('note-textarea')) {
-    e.target.addEventListener('input', textareaKeyInputHandler);
-    e.target.addEventListener('keydown', textareaKeypressHandler);
+    const cleanListArray = currentColumn.filter(function (lists) {
+      console.log(lists.id);
+    });
   }
 }
+
+function addCard(addButton) {
+  // const currentTextarea = addButton.parentNode.parentNode[0];
+  // const currentColumn = addButton.parentNode.parentNode.parentNode;
+  // const currentColumnUl = currentColumn.children[2];
+  // // 선택된 card의 id
+  // let currentNewId;
+  // // 선택된 column의 id값에 따라 배열을 나눠 저장
+  // if (currentColumn.id == 'before-items') {
+  //   addArrayList(beforeLists, currentTextarea.value);
+  //   // 선택된 array에 추가된 마지막 id값
+  //   saveLists('beforeLists', beforeLists);
+  // } else if (currentColumn.id == 'doing-items') {
+  //   addArrayList(doingLists, currentTextarea.value);
+  //   currentNewId = doingLists[doingLists.length - 1].id;
+  //   saveLists('doingLists', doingLists);
+  // } else if (currentColumn.id == 'after-items') {
+  //   addArrayList(afterLists, currentTextarea.value);
+  //   currentNewId = afterLists[afterLists.length - 1].id;
+  //   saveLists('afterLists', afterLists);
+  // }
+  // console.log(currentNewId);
+  // paintCard(currentTextarea.value, currentColumnUl, currentNewId);
+  // delectButtonsLoad();
+  // // textarea value값 초기화
+  // // addbtn active class 해제
+  // currentTextarea.value = '';
+  // addButton.classList.remove('active');
+}
+
+// function formBtnClickHandler(e) {
+//   //active된 add버튼을 눌렀을 시 카드 추가
+//   if (
+//     e.target.classList.contains('add-submit-btn') &&
+//     e.target.classList.contains('active')
+//   ) {
+//     //this는 input이 전송한 form을 가르킨다
+//     addCard(this[1]);
+//     e.target.classList.remove('active');
+
+//     // cancel 버튼 눌렀을 시 form 숨기기
+//   } else if (e.target.classList.contains('cancel-btn')) {
+//     let currentColumn = e.target.parentNode.parentNode.parentNode;
+
+//     currentColumn.classList.remove('add-active');
+
+//     ulHeightControl(currentColumn);
+
+//     // textarea를 클릭했을 시 입력받은 값에 따라
+//     // add submit 버튼 색상을 변경하는 이벤트 실행
+//   } else if (e.target.classList.contains('note-textarea')) {
+//     e.target.addEventListener('input', textareaKeyInputHandler);
+//     e.target.addEventListener('keydown', textareaKeypressHandler);
+//   }
+// }
 
 // 페이지 로딩시 자동실행 함수
 function init() {
   loadLists('beforeLists', columns[0], beforeLists);
   loadLists('doingLists', columns[1], doingLists);
   loadLists('afterLists', columns[2], afterLists);
+  delectButtonsLoad();
 }
 
 for (let i = 0; i < plusBtn.length; i++) {

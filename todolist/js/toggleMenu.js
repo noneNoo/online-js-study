@@ -1,6 +1,8 @@
-// 버튼 가져오기
+// 햄버거 버튼 가져오기
 const menuOpenBtn = document.getElementById('menu-ham-btn');
 const menuCloseBtn = document.getElementById('menu-close-btn');
+
+//
 
 // sidemenu 가져오기
 const sideMenu = document.getElementById('side-menu');
