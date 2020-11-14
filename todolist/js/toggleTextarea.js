@@ -16,6 +16,7 @@ function ulHeightControl(currentColumn) {
 
 function plusBtnClickHandler(e) {
   let currentUl = e.target;
+
   // targetColumn변수가 column을 잡을 때까지 타겟을 위임
   while (!currentUl.classList.contains('column')) {
     currentUl = currentUl.parentNode;

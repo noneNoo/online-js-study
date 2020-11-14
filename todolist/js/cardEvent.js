@@ -8,6 +8,44 @@ loadLocalstorage('beforeArray', columns[0]);
 loadLocalstorage('doingArray', columns[1]);
 loadLocalstorage('afterArray', columns[2]);
 
+function filterCleanArray(arrayName, currentCard) {
+  // array에서 currentCard의 id를 걸러서
+  // 새로운 배열을 리턴
+  const cleanArray = arrayName.filter(function (lists) {
+    return lists.id !== parseInt(currentCard.id);
+  });
+
+  return cleanArray;
+}
+
+function deleteCard(e) {
+  // 버튼이 타겟될 때까지 이벤트위임
+  let currentBtn = e.target;
+  while (!currentBtn.classList.contains('card-delete-btn')) {
+    currentBtn = currentBtn.parentNode;
+  }
+  const currentCard = currentBtn.parentNode;
+  const currentUl = currentCard.parentNode;
+  const currentColumn = currentUl.parentNode;
+
+  // 먼저 paint된 card를 지워준다
+  currentUl.removeChild(currentCard);
+
+  // currentColumn에 따라
+  //    기존 배열 대신 filter된 배열을 넣어줌
+  //    로컬스토리지에 저장
+  if (currentColumn.id == 'before-items') {
+    beforeArray = filterCleanArray(beforeArray, currentCard);
+    saveLocalstorage('beforeArray', beforeArray);
+  } else if (currentColumn.id == 'doing-items') {
+    doingArray = filterCleanArray(doingArray, currentCard);
+    saveLocalstorage('doingArray', doingArray);
+  } else if (currentColumn.id == 'after-items') {
+    afterArray = filterCleanArray(afterArray, currentCard);
+    saveLocalstorage('afterArray', afterArray);
+  }
+}
+
 function loadLocalstorage(arrayNameString, currentColumn) {
   // 로컬스토리지의 배열을 가져올 경우,
   // 배열이 JSON형식으로 불러와짐
@@ -18,7 +56,6 @@ function loadLocalstorage(arrayNameString, currentColumn) {
   if (loadedLists !== null) {
     // JSON 형식을 array타입으로 바꿔주는 코드
     const parsedLists = JSON.parse(loadedLists);
-    console.log(parsedLists);
 
     parsedLists.forEach(function (lists) {
       paintCard(lists.text, currentColumn);
@@ -128,7 +165,7 @@ function paintCard(text, currentColumn) {
   newCard.appendChild(newCardDeleteBtn);
 
   // delete버튼에 이벤트 추가
-  // newCardDeleteBtn.addEventListener('click', deleteCard);
+  newCardDeleteBtn.addEventListener('click', deleteCard);
 
   // ul태그 잡기
   const currentUl = currentColumn.children[2];
