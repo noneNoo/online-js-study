@@ -354,12 +354,12 @@ aside > .hd-section > .title {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  display: none;
+  pointer-events: none;
 }
 
 #filter.active {
   opacity: 1;
-  display: none;
+  pointer-events: auto;
 }
 
 #filter > #popup {

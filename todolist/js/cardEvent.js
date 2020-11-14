@@ -1,12 +1,10 @@
 const columns = document.getElementsByClassName('column');
+const backgroundFilter = document.getElementById('filter');
+
 // card를 담을 공간
 let beforeArray = [];
 let doingArray = [];
 let afterArray = [];
-
-loadLocalstorage('beforeArray', columns[0]);
-loadLocalstorage('doingArray', columns[1]);
-loadLocalstorage('afterArray', columns[2]);
 
 function filterCleanArray(arrayName, currentCard) {
   // array에서 currentCard의 id를 걸러서
@@ -18,15 +16,44 @@ function filterCleanArray(arrayName, currentCard) {
   return cleanArray;
 }
 
-function deleteCard(e) {
+// closure 개념 공부!
+// 파라미터로 이전 이벤트의 변수를 가져오기 위해서?
+// 1. closure 이용하기
+// function alertBtnClickHandler(currentBtn) {
+//   return function (e) {
+//     if (e.target.id == 'yes-btn') {
+//       deleteCard(currentBtn);
+//       console.log(currentBtn);
+//     } else if (e.target.id == 'no-btn') {
+//     }
+//   };
+// }
+
+function deleteAlert(e) {
+  backgroundFilter.classList.add('active');
+
   // 버튼이 타겟될 때까지 이벤트위임
   let currentBtn = e.target;
   while (!currentBtn.classList.contains('card-delete-btn')) {
     currentBtn = currentBtn.parentNode;
   }
+
+  const alertBtns = document.getElementById('popup-btns');
+  alertBtns.addEventListener('click', function (e) {
+    if (e.target.id == 'yes-btn') {
+      deleteCard(currentBtn);
+      backgroundFilter.classList.remove('active');
+    } else if (e.target.id == 'no-btn') {
+      backgroundFilter.classList.add('active');
+    }
+  });
+}
+
+function deleteCard(currentBtn) {
   const currentCard = currentBtn.parentNode;
   const currentUl = currentCard.parentNode;
   const currentColumn = currentUl.parentNode;
+  console.dir(currentUl);
 
   // 먼저 paint된 card를 지워준다
   currentUl.removeChild(currentCard);
@@ -165,7 +192,7 @@ function paintCard(text, currentColumn) {
   newCard.appendChild(newCardDeleteBtn);
 
   // delete버튼에 이벤트 추가
-  newCardDeleteBtn.addEventListener('click', deleteCard);
+  newCardDeleteBtn.addEventListener('click', deleteAlert);
 
   // ul태그 잡기
   const currentUl = currentColumn.children[2];
@@ -175,3 +202,10 @@ function paintCard(text, currentColumn) {
   const currentTextarea = currentColumn.children[1][0];
   currentTextarea.value = '';
 }
+
+function init() {
+  loadLocalstorage('beforeArray', columns[0]);
+  loadLocalstorage('doingArray', columns[1]);
+  loadLocalstorage('afterArray', columns[2]);
+}
+init();
