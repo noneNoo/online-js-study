@@ -44,7 +44,7 @@ function deleteAlert(e) {
       deleteCard(currentBtn);
       backgroundFilter.classList.remove('active');
     } else if (e.target.id == 'no-btn') {
-      backgroundFilter.classList.add('active');
+      backgroundFilter.classList.remove('active');
     }
   });
 }
@@ -53,7 +53,6 @@ function deleteCard(currentBtn) {
   const currentCard = currentBtn.parentNode;
   const currentUl = currentCard.parentNode;
   const currentColumn = currentUl.parentNode;
-  console.dir(currentUl);
 
   // 먼저 paint된 card를 지워준다
   currentUl.removeChild(currentCard);
@@ -178,6 +177,7 @@ function paintCard(text, currentColumn) {
   //css 스타일링을 위한 classname 부여
   newCard.className = 'list-card';
   newCard.id = newId;
+  newCard.draggable = 'true';
   newCardIcon.className = 'icon';
   newCardTitle.className = 'list-card-title';
   newCardinfo.className = 'list-card-sub-info';
