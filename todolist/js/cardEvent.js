@@ -29,6 +29,21 @@ function filterCleanArray(arrayName, currentCard) {
 //   };
 // }
 
+function alertBtnClickHandler(currentBtn) {
+  return function (e) {
+    if (e.target.id == 'yes-btn') {
+      deleteCard(currentBtn);
+      backgroundFilter.classList.remove('active');
+    } else if (e.target.id == 'no-btn') {
+      backgroundFilter.classList.remove('active');
+    }
+  };
+}
+
+const alertBtns = document.getElementById('popup-btns');
+
+alertBtns.addEventListener('click', alertBtnClickHandler(currentBtn));
+
 function deleteAlert(e) {
   backgroundFilter.classList.add('active');
 
@@ -37,22 +52,14 @@ function deleteAlert(e) {
   while (!currentBtn.classList.contains('card-delete-btn')) {
     currentBtn = currentBtn.parentNode;
   }
-
-  const alertBtns = document.getElementById('popup-btns');
-  alertBtns.addEventListener('click', function (e) {
-    if (e.target.id == 'yes-btn') {
-      deleteCard(currentBtn);
-      backgroundFilter.classList.remove('active');
-    } else if (e.target.id == 'no-btn') {
-      backgroundFilter.classList.remove('active');
-    }
-  });
 }
 
 function deleteCard(currentBtn) {
   const currentCard = currentBtn.parentNode;
   const currentUl = currentCard.parentNode;
   const currentColumn = currentUl.parentNode;
+
+  // console.log(currentUl, currentCard, currentColumn);
 
   // 먼저 paint된 card를 지워준다
   currentUl.removeChild(currentCard);
