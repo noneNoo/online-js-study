@@ -28,6 +28,21 @@ for (let i = 0; colorLists.length > 0; i += 1) {
 }
 console.log(color);
 
+// 게임 시작시 모든 카드를 보여주는 함수
+function startShowCard(cardArray) {
+  // 카드를 순서대로 보여주기
+  cardArray.forEach(function (card, index) {
+    setTimeout(() => {
+      card.classList.add('flipped');
+    }, 1000 + 50 * index);
+
+    // 3초후 모든 카드 뒤집기
+    setTimeout(() => {
+      card.classList.remove('flipped');
+    }, 3000);
+  });
+}
+
 function settingCard(row, column) {
   for (let i = 0; i < row * column; i++) {
     const card = document.createElement('article');
@@ -54,6 +69,10 @@ function settingCard(row, column) {
       card.classList.toggle('flipped');
     });
   }
+
+  // 셋팅된 카드들
+  const cards = document.querySelectorAll('.card');
+  startShowCard(cards);
 }
 
 settingCard(row, column);
