@@ -1,6 +1,7 @@
 const row = 4;
 const column = 3;
 const mainContainer = document.getElementById('main-container');
+let clickFlag = true;
 
 const colorLists = [
   'red',
@@ -39,11 +40,14 @@ function startShowCard(cardArray) {
     // 3초후 모든 카드 뒤집기
     setTimeout(() => {
       card.classList.remove('flipped');
+      clickFlag = true;
     }, 3000);
   });
 }
 
 function settingCard(row, column) {
+  // 카드 세팅중 클릭이벤트 방지
+  clickFlag = false;
   for (let i = 0; i < row * column; i++) {
     const card = document.createElement('article');
     const cardInner = document.createElement('div');
@@ -66,7 +70,9 @@ function settingCard(row, column) {
     mainContainer.appendChild(card);
 
     card.addEventListener('click', () => {
-      card.classList.toggle('flipped');
+      if (clickFlag) {
+        card.classList.toggle('flipped');
+      }
     });
   }
 
