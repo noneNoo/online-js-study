@@ -1,6 +1,5 @@
 const row = 4;
 const column = 3;
-const mainContainer = document.getElementById('main-container');
 
 // 최근 포커스한 두 개의 카드를 담을 배열
 let focusCard = [];
@@ -9,6 +8,8 @@ let focusCard = [];
 // 이 배열 안에 담긴 카드들은 뒤집어지지 않게 처리한다
 let processedCards = [];
 let clickCount = 0;
+
+let startTime;
 
 const colorLists = [
   'red',
@@ -24,6 +25,8 @@ const colorLists = [
   'purple',
   'purple',
 ];
+
+let colorBackupArray = colorLists;
 
 let color = [];
 
@@ -47,6 +50,7 @@ function startShowCard(cardArray) {
     setTimeout(() => {
       card.classList.remove('flipped');
       clickFlag = true;
+      startTime = new Date();
     }, 3000);
   });
 }
@@ -73,7 +77,7 @@ function settingCard(row, column) {
     cardInner.appendChild(cardFront);
     cardInner.appendChild(cardBack);
     card.appendChild(cardInner);
-    mainContainer.appendChild(card);
+    document.querySelector('#main-container').appendChild(card);
 
     card.addEventListener('click', () => {
       // 선택한 카드가 processedCard배열에 없을시
@@ -88,14 +92,31 @@ function settingCard(row, column) {
           let secondBack = focusCard[1].querySelector('.card-back');
 
           // 두 카드의 색이 같을시
+
           if (
             firstBack.style.backgroundColor == secondBack.style.backgroundColor
           ) {
+            // 같은 카드를 두번 골랐을 시
+            if (focusCard[0] == focusCard[1]) {
+              focusCard = [];
+              return;
+            }
             processedCards.push(focusCard[0]);
             processedCards.push(focusCard[1]);
-            console.log(processedCards);
             // 카드 비워주기
             focusCard = [];
+
+            if (processedCards.length == row * column) {
+              let endTime = new Date();
+              let currentTime = (endTime - startTime) / 1000;
+
+              alert(`축하합니다! 총 소요시간 ${currentTime}`);
+              document.querySelector('#main-container').innerHTML = '';
+              colorBackupArray = color;
+              processedCards = [];
+              settingCard(row, column);
+            }
+
             // 두 카드의 색이 다를시
           } else {
             // 클릭 이벤트 잠깐 방지
