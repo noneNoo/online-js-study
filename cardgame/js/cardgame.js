@@ -1,7 +1,13 @@
 const row = 4;
 const column = 3;
 const mainContainer = document.getElementById('main-container');
+
+// 최근 포커스한 두 개의 카드를 담을 배열
 let focusCard = [];
+
+// 짝맞춰진 카드를 담을 배열
+// 이 배열 안에 담긴 카드들은 뒤집어지지 않게 처리한다
+let processedCards = [];
 let clickCount = 0;
 
 const colorLists = [
@@ -28,7 +34,6 @@ for (let i = 0; colorLists.length > 0; i += 1) {
     colorLists.splice(Math.floor(Math.random() * colorLists.length), 1)
   );
 }
-console.log(color);
 
 // 게임 시작시 모든 카드를 보여주는 함수
 function startShowCard(cardArray) {
@@ -71,20 +76,24 @@ function settingCard(row, column) {
     mainContainer.appendChild(card);
 
     card.addEventListener('click', () => {
-      if (clickFlag) {
+      // 선택한 카드가 processedCard배열에 없을시
+      if (clickFlag && !processedCards.includes(card)) {
         card.classList.toggle('flipped');
         focusCard.push(card);
-        console.log(focusCard);
+        // console.log(focusCard);
 
         // 포커스된 카드가 2개일 경우
         if (focusCard.length == 2) {
-          let firstKey = focusCard[0].querySelector('.card-back');
-          let secondKey = focusCard[1].querySelector('.card-back');
+          let firstBack = focusCard[0].querySelector('.card-back');
+          let secondBack = focusCard[1].querySelector('.card-back');
 
           // 두 카드의 색이 같을시
           if (
-            firstKey.style.backgroundColor == secondKey.style.backgroundColor
+            firstBack.style.backgroundColor == secondBack.style.backgroundColor
           ) {
+            processedCards.push(focusCard[0]);
+            processedCards.push(focusCard[1]);
+            console.log(processedCards);
             // 카드 비워주기
             focusCard = [];
             // 두 카드의 색이 다를시
