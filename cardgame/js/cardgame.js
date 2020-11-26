@@ -26,16 +26,21 @@ const colorLists = [
   'purple',
 ];
 
-let colorBackupArray = colorLists;
+let colorBackupArray = colorLists.slice();
 
 let color = [];
 
-for (let i = 0; colorLists.length > 0; i += 1) {
-  // 겹치지 않게 랜덤으로 색상을 뽑아내 배열을 만든다
-  // concat로 랜덤한 색이 붙은 새 배열을 만들어서 기존 배열에 넣어준다
-  color = color.concat(
-    colorLists.splice(Math.floor(Math.random() * colorLists.length), 1)
-  );
+function shuffleCard() {
+  for (let i = 0; colorBackupArray.length > 0; i += 1) {
+    // 겹치지 않게 랜덤으로 색상을 뽑아내 배열을 만든다
+    // concat로 랜덤한 색이 붙은 새 배열을 만들어서 기존 배열에 넣어준다
+    color = color.concat(
+      colorBackupArray.splice(
+        Math.floor(Math.random() * colorBackupArray.length),
+        1
+      )
+    );
+  }
 }
 
 // 게임 시작시 모든 카드를 보여주는 함수
@@ -112,8 +117,11 @@ function settingCard(row, column) {
 
               alert(`축하합니다! 총 소요시간 ${currentTime}`);
               document.querySelector('#main-container').innerHTML = '';
-              colorBackupArray = color;
+              colorBackupArray = colorLists.slice();
+              color = [];
               processedCards = [];
+
+              shuffleCard();
               settingCard(row, column);
             }
 
@@ -141,4 +149,5 @@ function settingCard(row, column) {
   startShowCard(cards);
 }
 
+shuffleCard();
 settingCard(row, column);
