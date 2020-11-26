@@ -1,7 +1,8 @@
 const row = 4;
 const column = 3;
 const mainContainer = document.getElementById('main-container');
-let clickFlag = true;
+let focusCard = [];
+let clickCount = 0;
 
 const colorLists = [
   'red',
@@ -22,7 +23,7 @@ let color = [];
 
 for (let i = 0; colorLists.length > 0; i += 1) {
   // 겹치지 않게 랜덤으로 색상을 뽑아내 배열을 만든다
-  // concat로 새로운 배열 만들어서 기존 배열에 넣어준다
+  // concat로 랜덤한 색이 붙은 새 배열을 만들어서 기존 배열에 넣어준다
   color = color.concat(
     colorLists.splice(Math.floor(Math.random() * colorLists.length), 1)
   );
@@ -72,6 +73,35 @@ function settingCard(row, column) {
     card.addEventListener('click', () => {
       if (clickFlag) {
         card.classList.toggle('flipped');
+        focusCard.push(card);
+        console.log(focusCard);
+
+        // 포커스된 카드가 2개일 경우
+        if (focusCard.length == 2) {
+          let firstKey = focusCard[0].querySelector('.card-back');
+          let secondKey = focusCard[1].querySelector('.card-back');
+
+          // 두 카드의 색이 같을시
+          if (
+            firstKey.style.backgroundColor == secondKey.style.backgroundColor
+          ) {
+            // 카드 비워주기
+            focusCard = [];
+            // 두 카드의 색이 다를시
+          } else {
+            // 클릭 이벤트 잠깐 방지
+            clickFlag = false;
+            setTimeout(function () {
+              focusCard[0].classList.remove('flipped');
+              focusCard[1].classList.remove('flipped');
+              // 카드 비워주기
+              focusCard = [];
+              clickFlag = true;
+            }, 1000);
+          }
+
+          // 카드배열 비워주기
+        }
       }
     });
   }
