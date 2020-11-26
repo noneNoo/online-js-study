@@ -45,7 +45,7 @@ main {
   border-radius: 5px;
 }
 
-.filter {
+#filter {
   background-color: rgba(0, 0, 0, 0);
   width: 100vw;
   height: 100vh;
@@ -57,7 +57,7 @@ main {
   transition: 0.5s;
 }
 
-.filter.active {
+#filter.active {
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: visible;
 }
@@ -76,7 +76,7 @@ main {
   box-shadow: 0px 5px 5px 1px rgba(0, 0, 0, 0.3);
 }
 
-.filter.active #popup {
+#filter.active #popup {
   transform: translateY(0px);
   opacity: 1;
   transition: 0.5s;

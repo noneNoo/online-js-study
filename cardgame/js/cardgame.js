@@ -1,3 +1,5 @@
+const backgroundFilter = document.getElementById('filter');
+
 const row = 4;
 const column = 3;
 
@@ -112,17 +114,27 @@ function settingCard(row, column) {
             focusCard = [];
 
             if (processedCards.length == row * column) {
-              let endTime = new Date();
-              let currentTime = (endTime - startTime) / 1000;
+              const endTime = new Date();
+              const currentTime = (endTime - startTime) / 1000;
+              document.getElementById(
+                'game-time'
+              ).innerHTML = `${currentTime}초`;
+              backgroundFilter.classList.add('active');
 
-              alert(`축하합니다! 총 소요시간 ${currentTime}`);
-              document.querySelector('#main-container').innerHTML = '';
-              colorBackupArray = colorLists.slice();
-              color = [];
-              processedCards = [];
+              const retryBtn = document.getElementById('re-try');
 
-              shuffleCard();
-              settingCard(row, column);
+              // 취소버튼이 눌렸을시
+              retryBtn.addEventListener('click', function (e) {
+                backgroundFilter.classList.remove('active');
+                document.querySelector('#main-container').innerHTML = '';
+                colorBackupArray = colorLists.slice();
+                color = [];
+                processedCards = [];
+                shuffleCard();
+                settingCard(row, column);
+              });
+
+              //   //   alert(`축하합니다! 총 소요시간 ${currentTime}`);
             }
 
             // 두 카드의 색이 다를시
