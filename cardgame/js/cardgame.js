@@ -9,7 +9,7 @@ let focusCard = [];
 // 짝맞춰진 카드를 담을 배열
 // 이 배열 안에 담긴 카드들은 뒤집어지지 않게 처리한다
 let processedCards = [];
-let clickCount = 0;
+let clickFlag;
 
 let startTime;
 
