@@ -32,6 +32,7 @@ let colorBackupArray = colorLists.slice();
 
 let color = [];
 
+// 카드를 섞는 함수
 function shuffleCard() {
   for (let i = 0; colorBackupArray.length > 0; i += 1) {
     // 겹치지 않게 랜덤으로 색상을 뽑아내 배열을 만든다
@@ -62,6 +63,7 @@ function startShowCard(cardArray) {
   });
 }
 
+// 카드 HTML, CSS, 클릭이벤트를 셋팅해주는 함수
 function settingCard(row, column) {
   // 카드 세팅중 클릭이벤트 방지
   clickFlag = false;
@@ -86,6 +88,7 @@ function settingCard(row, column) {
     card.appendChild(cardInner);
     document.querySelector('#main-container').appendChild(card);
 
+    // 카드 하나하나에 클릭이벤트 부여
     card.addEventListener('click', () => {
       // 선택한 카드가 processedCard배열에 없을시
       if (clickFlag && !processedCards.includes(card)) {
@@ -99,7 +102,6 @@ function settingCard(row, column) {
           let secondBack = focusCard[1].querySelector('.card-back');
 
           // 두 카드의 색이 같을시
-
           if (
             firstBack.style.backgroundColor == secondBack.style.backgroundColor
           ) {
@@ -108,13 +110,16 @@ function settingCard(row, column) {
               focusCard = [];
               return;
             }
+            // 완료 배열에 넣어주기
             processedCards.push(focusCard[0]);
             processedCards.push(focusCard[1]);
             // 카드 비워주기
             focusCard = [];
 
+            // 모든 카드가 짝맞추어졌을 때
             if (processedCards.length == row * column) {
               const endTime = new Date();
+              // 게임이 끝난 시간 측정
               const currentTime = (endTime - startTime) / 1000;
               document.getElementById(
                 'game-time'
@@ -123,18 +128,20 @@ function settingCard(row, column) {
 
               const retryBtn = document.getElementById('re-try');
 
-              // 취소버튼이 눌렸을시
+              // 다시하기를 눌렀을 시
               retryBtn.addEventListener('click', function (e) {
                 backgroundFilter.classList.remove('active');
+                // HTML 초기화
                 document.querySelector('#main-container').innerHTML = '';
+                // 배열 초기화
                 colorBackupArray = colorLists.slice();
                 color = [];
                 processedCards = [];
+                
+                // 게임 재시작
                 shuffleCard();
                 settingCard(row, column);
               });
-
-              //   //   alert(`축하합니다! 총 소요시간 ${currentTime}`);
             }
 
             // 두 카드의 색이 다를시
@@ -142,15 +149,14 @@ function settingCard(row, column) {
             // 클릭 이벤트 잠깐 방지
             clickFlag = false;
             setTimeout(function () {
+              // 카드를 다시 뒤집을 수 있게 하기
               focusCard[0].classList.remove('flipped');
               focusCard[1].classList.remove('flipped');
-              // 카드 비워주기
+              // 포커스 카드 비워주기
               focusCard = [];
               clickFlag = true;
             }, 1000);
           }
-
-          // 카드배열 비워주기
         }
       }
     });
